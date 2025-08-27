@@ -16,11 +16,19 @@ import { setAuthorization } from "./helpers/api_helper"; // Adjust the import pa
 
 //import components
 import CoverSignIn from "./pages/AuthenticationInner/Login/CoverSignIn";
-import DashboardProject from "./pages/DashboardProject/index";
-import OfflineTable from "./pages/Tables/offlineDataTable/OfflineTable";
+import DashboardJobs from "./pages/DashboardJob/index";
+// import BasicTables from "./pages/Tables/BasicTables/BasicTables";
 import AuthProtected from "./Routes/AuthProtected";
 import PublicRoute from "./Routes/PublicRoutes";
 import VerticalLayout from "../src/Layouts/index";
+// import UpdateSubscriber from "./pages/updateSubscriber/index";
+// import SelectVendor from "./pages/VendorList/SelectVendor/index";
+// import VendorData from "./pages/VendorList/VendorData/index";
+
+import RechargeDetails from "pages/Admin/RechargeDetails/index";
+import UtilityDetailTable from "pages/Admin/UtilityDetails/index";
+import RechargeDetailsPage from "pages/Admin/topXRechargeDetails/index";
+import TopXUtilityDetailTable from "pages/Admin/topXUtilityDetails/index";
 
 // Fake Backend (if you are using it)
 import fakeBackend from "./helpers/AuthType/fakeBackend";
@@ -91,17 +99,68 @@ function App() {
           element={
             <AuthProtected>
               <VerticalLayout>
-                <DashboardProject />
+                <DashboardJobs />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+
+        {/* <Route
+          path="/Select-Vendor"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <SelectVendor />
               </VerticalLayout>
             </AuthProtected>
           }
         />
         <Route
-          path="/tables-offileData"
+          path="/vendor-Data"
           element={
             <AuthProtected>
               <VerticalLayout>
-                <OfflineTable />
+                <VendorData />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        /> */}
+        <Route
+          path="/recharge-details"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <RechargeDetails />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+        <Route
+          path="/utility-details"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <UtilityDetailTable />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+        <Route
+          path="/topX-recharge-details"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <RechargeDetailsPage />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+        <Route
+          path="/topX-utility-details"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <TopXUtilityDetailTable />
               </VerticalLayout>
             </AuthProtected>
           }
