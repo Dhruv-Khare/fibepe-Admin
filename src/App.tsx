@@ -29,6 +29,7 @@ import RechargeDetails from "pages/Admin/RechargeDetails/index";
 import UtilityDetailTable from "pages/Admin/UtilityDetails/index";
 import RechargeDetailsPage from "pages/Admin/topXRechargeDetails/index";
 import TopXUtilityDetailTable from "pages/Admin/topXUtilityDetails/index";
+import ServiceProvider from "pages/Admin/serviceProvider/index";
 
 // Fake Backend (if you are using it)
 import fakeBackend from "./helpers/AuthType/fakeBackend";
@@ -161,6 +162,16 @@ function App() {
             <AuthProtected>
               <VerticalLayout>
                 <TopXUtilityDetailTable />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+        <Route
+          path="/service-provider"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <ServiceProvider />
               </VerticalLayout>
             </AuthProtected>
           }

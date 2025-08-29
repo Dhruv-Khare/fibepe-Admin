@@ -116,13 +116,19 @@ const TopXUtilityDetailTable: FC = () => {
     // Cleanup: Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, []);
-  const paginatedRecords = useMemo(() => {
-    const filteredRecords = records.filter((record) =>
+  // STEP 1: Create a memoized list of filtered records.
+  // This only recalculates when the main records or the search term changes.
+  const filteredRecords = useMemo(() => {
+    return records.filter((record) =>
       Object.values(record).some((value) =>
         String(value).toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
+  }, [records, searchTerm]);
 
+  // STEP 2: Use the filtered list for sorting and pagination.
+  // This now recalculates when the filtered list, sort config, or current page changes.
+  const paginatedRecords = useMemo(() => {
     const sortedRecords = [...filteredRecords].sort((a, b) => {
       const aValue = a[sortConfig.key];
       const bValue = b[sortConfig.key];
@@ -138,15 +144,10 @@ const TopXUtilityDetailTable: FC = () => {
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return sortedRecords.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [records, searchTerm, sortConfig, currentPage]);
+  }, [filteredRecords, sortConfig, currentPage]);
 
-  const totalPages = Math.ceil(
-    records.filter((record) =>
-      Object.values(record).some((value) =>
-        String(value).toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    ).length / ITEMS_PER_PAGE
-  );
+  // STEP 3: Calculate total pages from the *same* filtered list.
+  const totalPages = Math.ceil(filteredRecords.length / ITEMS_PER_PAGE);
 
   const handleSort = (key: keyof UtilityRecord) => {
     const direction: SortDirection =
@@ -178,11 +179,13 @@ const TopXUtilityDetailTable: FC = () => {
 
   return (
     <div className="card-body">
-      {/* <div className="row g-4 mb-3">
+      <div className="row g-4 mb-3">
         <div className="col-sm">
           <div className="d-flex justify-content-sm-end">
             <div className="search-box ms-2" style={{ position: "relative" }}>
               <input
+                id="recharge-search"
+                name="recharge-search"
                 type="text"
                 className="form-control"
                 placeholder="Search..."
@@ -199,12 +202,13 @@ const TopXUtilityDetailTable: FC = () => {
                   top: "50%",
                   right: "10px",
                   transform: "translateY(-50%)",
+                  pointerEvents: "none", // <-- ADD THIS LINE TO FIX THE CLICKING ISSUE
                 }}
               ></i>
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
       <div className="table-responsive table-card mt-3 mb-1">
         <table
