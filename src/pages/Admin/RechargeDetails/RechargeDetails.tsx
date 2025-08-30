@@ -1,4 +1,4 @@
-import { co } from "@fullcalendar/core/internal-common";
+// import { co } from "@fullcalendar/core/internal-common";
 import React, { useState, useEffect, useMemo, FC } from "react";
 // import dotenv from "dotenv";
 
@@ -22,6 +22,10 @@ type SortDirection = "ascending" | "descending";
 interface SortConfig {
   key: keyof RechargeRecord;
   direction: SortDirection;
+}
+interface TableHeader {
+  key: keyof RechargeRecord;
+  label: string;
 }
 
 // --- CONFIGURATION ---
@@ -146,6 +150,16 @@ const RechargeDetailTable: FC = () => {
     setSortConfig({ key, direction });
     setCurrentPage(1);
   };
+  const totalAmount = useMemo(() => {
+    return records.reduce((sum, record) => {
+      // Check if the status is 'success' before adding the amount
+      if (record.FinalStatus.toLowerCase() === "success") {
+        return sum + record.Amount;
+      }
+      // Otherwise, return the current sum without adding anything
+      return sum;
+    }, 0); // The 0 is the initial value for the sum
+  }, [records]); // This recalculates only when 'records' changes.
 
   if (isLoading) {
     return (
@@ -165,12 +179,39 @@ const RechargeDetailTable: FC = () => {
       </div>
     );
   }
+  // Add this array inside your RechargeDetailTable component
+  const tableHeaders: TableHeader[] = [
+    { key: "LedgerId", label: "Ledger Id" },
+    { key: "FibepeId", label: "Fibepe Id" },
+    { key: "Number", label: "Number" },
+    { key: "OperatorName", label: "Operator Name" },
+    { key: "CircleName", label: "Circle Name" },
+    { key: "ServiceType", label: "Service Type" },
+    { key: "Amount", label: "Amount" },
+    { key: "FinalStatus", label: "Final Status" },
+    { key: "CreatedDate", label: "Created Date" },
+    { key: "OperatorRefId", label: "Operator Ref Id" },
+  ];
 
   return (
     <div className="card-body">
       <div className="row g-4 mb-3">
         <div className="col-sm">
-          <div className="d-flex justify-content-sm-end">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            {/* Total Amount (will be on the left) */}
+            <div className="d-flex align-items-center">
+              <h5 style={{ fontWeight: "bold" }}>
+                Total Amount:{" "}
+                <span className="text-success fw-bold">
+                  {totalAmount.toLocaleString("en-IN", {
+                    style: "currency",
+                    currency: "INR",
+                  })}
+                </span>
+              </h5>
+            </div>
+
+            {/* Search Box (will be on the right) */}
             <div className="search-box ms-2" style={{ position: "relative" }}>
               <input
                 id="recharge-search"
@@ -191,7 +232,7 @@ const RechargeDetailTable: FC = () => {
                   top: "50%",
                   right: "10px",
                   transform: "translateY(-50%)",
-                  pointerEvents: "none", // <-- ADD THIS LINE TO FIX THE CLICKING ISSUE
+                  pointerEvents: "none",
                 }}
               ></i>
             </div>
@@ -206,31 +247,26 @@ const RechargeDetailTable: FC = () => {
         >
           <thead className="table-light">
             <tr>
-              {(
-                Object.keys(records[0] || {}) as Array<keyof RechargeRecord>
-              ).map((key) => (
+              {tableHeaders.map((header) => (
                 <th
-                  key={key}
-                  // className="sort"
+                  key={header.key}
                   style={{ cursor: "pointer", verticalAlign: "middle" }}
-                  onClick={() => handleSort(key)}
+                  onClick={() => handleSort(header.key)}
                 >
-                  {/* --- FIX IS HERE --- */}
-                  {/* Flex styles are now on an inner div, not the th itself */}
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "baseline", // The only change is here
+                      alignItems: "baseline",
                       justifyContent: "center",
                       gap: "0.5rem",
                     }}
                   >
-                    <span>{key.replace(/([A-Z])/g, " $1").trim()}</span>
+                    <span>{header.label}</span>
                     <span
                       style={{
                         width: "1em",
                         visibility:
-                          sortConfig.key === key ? "visible" : "hidden",
+                          sortConfig.key === header.key ? "visible" : "hidden",
                       }}
                     >
                       {sortConfig.direction === "ascending" ? "▲" : "▼"}

@@ -7,10 +7,16 @@ type UtilityRecord = {
   ConsumerNumber: string;
   CategoryName: string;
   Amount: number;
-
+  ConfirmationNumber: string;
   FinalStatus: string;
   CreatedDate: string;
+  CustomerName: string;
+  OrderNumber: string;
 };
+interface TableHeader {
+  key: keyof UtilityRecord;
+  label: string;
+}
 
 type SortDirection = "ascending" | "descending";
 
@@ -176,6 +182,19 @@ const TopXUtilityDetailTable: FC = () => {
       </div>
     );
   }
+  // Add this array inside your RechargeDetailTable component
+  const tableHeaders: TableHeader[] = [
+    { key: "LedgerId", label: "Ledger Id" },
+    { key: "FibepeId", label: "Fibepe Id" },
+    { key: "ConsumerNumber", label: "Number" },
+    { key: "CategoryName", label: "Category Name" },
+    { key: "Amount", label: "Amount" },
+    { key: "FinalStatus", label: "Final Status" },
+    { key: "CreatedDate", label: "Created Date" },
+    { key: "ConfirmationNumber", label: "Confirmation Number" },
+    { key: "CustomerName", label: "Customer Name" },
+    { key: "OrderNumber", label: "Order Number" },
+  ];
 
   return (
     <div className="card-body">
@@ -217,31 +236,26 @@ const TopXUtilityDetailTable: FC = () => {
         >
           <thead className="table-light">
             <tr>
-              {(
-                Object.keys(records[0] || {}) as Array<keyof UtilityRecord>
-              ).map((key) => (
+              {tableHeaders.map((header) => (
                 <th
-                  key={key}
-                  // className="sort"
+                  key={header.key}
                   style={{ cursor: "pointer", verticalAlign: "middle" }}
-                  onClick={() => handleSort(key)}
+                  onClick={() => handleSort(header.key)}
                 >
-                  {/* --- FIX IS HERE --- */}
-                  {/* Flex styles are now on an inner div, not the th itself */}
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "baseline", // The only change is here
+                      alignItems: "baseline",
                       justifyContent: "center",
                       gap: "0.5rem",
                     }}
                   >
-                    <span>{key.replace(/([A-Z])/g, " $1").trim()}</span>
+                    <span>{header.label}</span>
                     <span
                       style={{
                         width: "1em",
                         visibility:
-                          sortConfig.key === key ? "visible" : "hidden",
+                          sortConfig.key === header.key ? "visible" : "hidden",
                       }}
                     >
                       {sortConfig.direction === "ascending" ? "▲" : "▼"}
@@ -274,6 +288,9 @@ const TopXUtilityDetailTable: FC = () => {
                     </span>
                   </td>
                   <td>{record.CreatedDate}</td>
+                  <td>{record.ConfirmationNumber}</td>
+                  <td>{record.CustomerName}</td>
+                  <td>{record.OrderNumber}</td>
                 </tr>
               ))
             ) : (

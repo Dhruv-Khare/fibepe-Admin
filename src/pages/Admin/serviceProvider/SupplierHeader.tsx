@@ -55,6 +55,7 @@ const SupplierHeader: FC = () => {
       </Row>
     );
   }
+  const secondaryColor = "#f06548"; // A pleasant orange shade
 
   return (
     <Row>
@@ -73,9 +74,17 @@ const SupplierHeader: FC = () => {
           suppliers.map((supplier) => (
             <Col key={supplier.SupplierCode}>
               <Card>
-                <CardBody className="text-center">
-                  <h5 className="mb-1">{supplier.SupplierExtendedName}</h5>
-                  <p className="text-muted mb-0">{supplier.SupplierCode}</p>
+                <CardBody
+                  className="text-center "
+                  style={{
+                    backgroundColor: secondaryColor,
+                    borderRadius: "8px",
+                  }}
+                >
+                  <h5 className="mb-1 color-white" style={{ color: "white" }}>
+                    {supplier.SupplierExtendedName}
+                  </h5>
+                  <p className=" mb-0">{supplier.SupplierCode}</p>
                 </CardBody>
               </Card>
             </Col>

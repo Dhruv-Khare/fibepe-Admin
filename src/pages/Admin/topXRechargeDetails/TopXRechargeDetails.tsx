@@ -1,4 +1,4 @@
-import { co } from "@fullcalendar/core/internal-common";
+// import { co } from "@fullcalendar/core/internal-common";
 import React, { useState, useEffect, useMemo, FC } from "react";
 // import dotenv from "dotenv";
 
@@ -16,6 +16,11 @@ type RechargeRecord = {
   CreatedDate: string;
   OperatorRefId: string;
 };
+
+interface TableHeader {
+  key: keyof RechargeRecord;
+  label: string;
+}
 
 type SortDirection = "ascending" | "descending";
 
@@ -183,6 +188,19 @@ const TopXRechargeDetailTable: FC = () => {
       </div>
     );
   }
+  // Add this array inside your RechargeDetailTable component
+  const tableHeaders: TableHeader[] = [
+    { key: "LedgerId", label: "Ledger Id" },
+    { key: "FibepeId", label: "Fibepe Id" },
+    { key: "Number", label: "Number" },
+    { key: "OperatorName", label: "Operator Name" },
+    { key: "CircleName", label: "Circle Name" },
+    { key: "ServiceType", label: "Service Type" },
+    { key: "Amount", label: "Amount" },
+    { key: "FinalStatus", label: "Final Status" },
+    { key: "CreatedDate", label: "Created Date" },
+    { key: "OperatorRefId", label: "Operator Ref Id" },
+  ];
 
   return (
     <div className="card-body">
@@ -224,31 +242,26 @@ const TopXRechargeDetailTable: FC = () => {
         >
           <thead className="table-light">
             <tr>
-              {(
-                Object.keys(records[0] || {}) as Array<keyof RechargeRecord>
-              ).map((key) => (
+              {tableHeaders.map((header) => (
                 <th
-                  key={key}
-                  // className="sort"
+                  key={header.key}
                   style={{ cursor: "pointer", verticalAlign: "middle" }}
-                  onClick={() => handleSort(key)}
+                  onClick={() => handleSort(header.key)}
                 >
-                  {/* --- FIX IS HERE --- */}
-                  {/* Flex styles are now on an inner div, not the th itself */}
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "baseline", // The only change is here
+                      alignItems: "baseline",
                       justifyContent: "center",
                       gap: "0.5rem",
                     }}
                   >
-                    <span>{key.replace(/([A-Z])/g, " $1").trim()}</span>
+                    <span>{header.label}</span>
                     <span
                       style={{
                         width: "1em",
                         visibility:
-                          sortConfig.key === key ? "visible" : "hidden",
+                          sortConfig.key === header.key ? "visible" : "hidden",
                       }}
                     >
                       {sortConfig.direction === "ascending" ? "▲" : "▼"}

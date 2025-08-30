@@ -14,11 +14,21 @@ const ServiceProviderPage = () => {
       <div className="page-content">
         <Container fluid>
           <BreadCrumb title="Service Providers " pageTitle="Tables" />
-          <Row>
-            <Col xs={12}>
-              <SupplierHeader />
-            </Col>
-          </Row>
+          <div
+            style={{
+              position: "sticky",
+              top: 70,
+              zIndex: 1,
+              backdropFilter: "blur(10px)",
+              paddingBottom: "5px",
+            }}
+          >
+            <Row>
+              <Col xs={12}>
+                <SupplierHeader />
+              </Col>
+            </Row>
+          </div>
           {/* ================================================================== */}
           {/* == YOUR NEW DYNAMIC CUSTOMER LIST TABLE IS ADDED HERE == */}
           {/* ================================================================== */}
