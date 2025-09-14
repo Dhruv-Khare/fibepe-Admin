@@ -34,7 +34,7 @@ import TopXRechargeDetailTable from "./TopXRechargeDetails";
 // } from "./BasicTablesCode";
 
 const RechargeDetailsPage = () => {
-  document.title = "Fibepe-Admin";
+  document.title = "Fibepe - Admin";
   return (
     <React.Fragment>
       <UiContent />

@@ -8,7 +8,7 @@ var UiContent_1 = require("../../../Components/Common/UiContent");
 var serviceProvider_1 = require("./serviceProvider");
 var SupplierHeader_1 = require("./SupplierHeader");
 var ServiceProviderPage = function () {
-    document.title = "Fibepe-Admin";
+    document.title = "Fibepe - Admin";
     return (react_1["default"].createElement(react_1["default"].Fragment, null,
         react_1["default"].createElement(UiContent_1["default"], null),
         react_1["default"].createElement("div", { className: "page-content" },

@@ -7,7 +7,7 @@ import UtilityDetailTable from "./serviceProvider";
 import SupplierHeader from "./SupplierHeader";
 
 const ServiceProviderPage = () => {
-  document.title = "Fibepe-Admin";
+  document.title = "Fibepe - Admin";
   return (
     <React.Fragment>
       <UiContent />

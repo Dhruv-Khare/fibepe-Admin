@@ -92,7 +92,7 @@ var SupplierHeader = function () {
                     "Could not load supplier details: ",
                     error))));
     }
-    var secondaryColor = "#f06548"; // A pleasant orange shade
+    var secondaryColor = "#0ab39c"; // A pleasant orange shade
     return (react_1["default"].createElement(reactstrap_1.Row, null, isLoading
         ? // Show placeholder spinners while loading
             Array.from({ length: 5 }).map(function (_, idx) { return (react_1["default"].createElement(reactstrap_1.Col, { key: idx },
@@ -107,6 +107,6 @@ var SupplierHeader = function () {
                             borderRadius: "8px"
                         } },
                         react_1["default"].createElement("h5", { className: "mb-1 color-white", style: { color: "white" } }, supplier.SupplierExtendedName),
-                        react_1["default"].createElement("p", { className: " mb-0" }, supplier.SupplierCode))))); })));
+                        react_1["default"].createElement("p", { className: " mb-0 color-white", style: { color: "white" } }, supplier.SupplierCode))))); })));
 };
 exports["default"] = SupplierHeader;

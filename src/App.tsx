@@ -16,23 +16,21 @@ import { setAuthorization } from "./helpers/api_helper"; // Adjust the import pa
 
 //import components
 import CoverSignIn from "./pages/AuthenticationInner/Login/CoverSignIn";
-import DashboardJobs from "./pages/DashboardJob/index";
-// import BasicTables from "./pages/Tables/BasicTables/BasicTables";
+import DashboardProject from "pages/DashboardProject/index";
 import AuthProtected from "./Routes/AuthProtected";
 import PublicRoute from "./Routes/PublicRoutes";
 import VerticalLayout from "../src/Layouts/index";
-// import UpdateSubscriber from "./pages/updateSubscriber/index";
-// import SelectVendor from "./pages/VendorList/SelectVendor/index";
-// import VendorData from "./pages/VendorList/VendorData/index";
 
 import RechargeDetails from "pages/Admin/RechargeDetails/index";
 import UtilityDetailTable from "pages/Admin/UtilityDetails/index";
 import RechargeDetailsPage from "pages/Admin/topXRechargeDetails/index";
 import TopXUtilityDetailTable from "pages/Admin/topXUtilityDetails/index";
 import ServiceProvider from "pages/Admin/serviceProvider/index";
+import Operators from "pages/Admin/OperatorSummary/index";
 
 // Fake Backend (if you are using it)
 import fakeBackend from "./helpers/AuthType/fakeBackend";
+import RefundForm from "pages/Admin/Refund/index";
 fakeBackend();
 
 function App() {
@@ -100,7 +98,7 @@ function App() {
           element={
             <AuthProtected>
               <VerticalLayout>
-                <DashboardJobs />
+                <DashboardProject />
               </VerticalLayout>
             </AuthProtected>
           }
@@ -172,6 +170,26 @@ function App() {
             <AuthProtected>
               <VerticalLayout>
                 <ServiceProvider />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+         <Route
+          path="/summary"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <Operators />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+         <Route
+          path="/refund"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <RefundForm />
               </VerticalLayout>
             </AuthProtected>
           }

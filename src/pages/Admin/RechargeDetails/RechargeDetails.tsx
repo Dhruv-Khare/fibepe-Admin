@@ -2,6 +2,9 @@
 import React, { useState, useEffect, useMemo, FC } from "react";
 // import dotenv from "dotenv";
 
+import ProviderHeader, { ProviderSummary } from "./ProviderHeader"; 
+
+
 // dotenv.config();
 // --- TYPE DEFINITIONS ---
 type RechargeRecord = {
@@ -13,6 +16,7 @@ type RechargeRecord = {
   ServiceType: string;
   Amount: number;
   FinalStatus: string;
+  ProviderName:string;
   CreatedDate: string;
   OperatorRefId: string;
 };
@@ -52,6 +56,7 @@ const Button: FC<{
 
 // --- MAIN COMPONENT ---
 const RechargeDetailTable: FC = () => {
+  
   console.log(
     "RechargeDetails component rendered at:",
     new Date().toLocaleTimeString()
@@ -59,13 +64,54 @@ const RechargeDetailTable: FC = () => {
 
   const [records, setRecords] = useState<RechargeRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [sortConfig, setSortConfig] = useState<SortConfig>({
-    key: "LedgerId",
-    direction: "descending",
-  });
-  const [currentPage, setCurrentPage] = useState<number>(1);
+   const [sortConfig, setSortConfig] = useState<SortConfig>({
+     key: "LedgerId",
+     direction: "descending",
+   });
+ const [currentPage, setCurrentPage] = useState<number>(1)
+  
+  
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  
+
+  
+   // --- NEW: Calculate provider summary data from records ---
+  const providerSummary = useMemo<ProviderSummary[]>(() => {
+    // Return empty array if there's nothing to process
+    if (records.length === 0) {
+      return [];
+    }
+    // Use a Map to aggregate data for each unique provider
+    const summaryMap = new Map<string, Omit<ProviderSummary, "providerName">>();
+    for (const record of records) {
+      const providerName = record.ProviderName || "Unknown";
+      // Initialize the provider if it's not in the map yet
+      if (!summaryMap.has(providerName)) {
+        summaryMap.set(providerName, {
+          successAmount: 0,
+          failedAmount: 0,
+          totalAmount: 0,
+        });
+      }
+      const current = summaryMap.get(providerName)!;
+      // Add to total amount
+      current.totalAmount += record.Amount;
+      // Add to success or failed amount based on status
+      const status = record.FinalStatus.toLowerCase();
+      if (status === "success") {
+        current.successAmount += record.Amount;
+      } else if (status === "failed") {
+        current.failedAmount += record.Amount;
+      }
+    }
+    // Convert the map back to an array of objects for the component
+    return Array.from(summaryMap.entries()).map(([providerName, amounts]) => ({
+      providerName,
+      ...amounts,
+    }));
+  }, [records]);
+
 
   useEffect(() => {
     const fetchRechargeData = async () => {
@@ -103,6 +149,7 @@ const RechargeDetailTable: FC = () => {
         console.error("Fetch error:", e);
       } finally {
         setIsLoading(false);
+
       }
     };
 
@@ -150,16 +197,7 @@ const RechargeDetailTable: FC = () => {
     setSortConfig({ key, direction });
     setCurrentPage(1);
   };
-  const totalAmount = useMemo(() => {
-    return records.reduce((sum, record) => {
-      // Check if the status is 'success' before adding the amount
-      if (record.FinalStatus.toLowerCase() === "success") {
-        return sum + record.Amount;
-      }
-      // Otherwise, return the current sum without adding anything
-      return sum;
-    }, 0); // The 0 is the initial value for the sum
-  }, [records]); // This recalculates only when 'records' changes.
+
 
   if (isLoading) {
     return (
@@ -189,7 +227,8 @@ const RechargeDetailTable: FC = () => {
     { key: "ServiceType", label: "Service Type" },
     { key: "Amount", label: "Amount" },
     { key: "FinalStatus", label: "Final Status" },
-    { key: "CreatedDate", label: "Created Date" },
+    {key:"ProviderName", label:"Provider Name"},
+    // { key: "CreatedDate", label: "Created Date" },
     { key: "OperatorRefId", label: "Operator Ref Id" },
   ];
 
@@ -198,17 +237,15 @@ const RechargeDetailTable: FC = () => {
       <div className="row g-4 mb-3">
         <div className="col-sm">
           <div className="d-flex justify-content-between align-items-center mb-3">
-            {/* Total Amount (will be on the left) */}
-            <div className="d-flex align-items-center">
-              <h5 style={{ fontWeight: "bold" }}>
-                Total Amount:{" "}
-                <span className="text-success fw-bold">
-                  {totalAmount.toLocaleString("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                  })}
-                </span>
-              </h5>
+            <div>
+              <span className="text-bolder fw-bold">
+                Date:{" "}
+                {new Date().toLocaleDateString("en-IN", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
             </div>
 
             {/* Search Box (will be on the right) */}
@@ -239,6 +276,12 @@ const RechargeDetailTable: FC = () => {
           </div>
         </div>
       </div>
+      
+        <div className="mb-4">
+          <ProviderHeader data={providerSummary} isLoading={isLoading} />
+        </div>
+     
+      
 
       <div className="table-responsive table-card mt-3 mb-1">
         <table
@@ -300,13 +343,14 @@ const RechargeDetailTable: FC = () => {
                       {record.FinalStatus}
                     </span>
                   </td>
-                  <td>{record.CreatedDate}</td>
+                  <td>{record.ProviderName}</td>
+                  {/* <td>{record.CreatedDate}</td> */}
                   <td>{record.OperatorRefId}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={10} className="text-center py-5">
+                <td colSpan={9} className="text-center py-5">
                   <h5>Sorry! No Result Found</h5>
                 </td>
               </tr>
@@ -336,6 +380,7 @@ const RechargeDetailTable: FC = () => {
           </Button>
         </div>
       </div>
+   
     </div>
   );
 };

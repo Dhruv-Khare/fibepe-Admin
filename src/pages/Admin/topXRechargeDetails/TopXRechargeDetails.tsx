@@ -198,7 +198,7 @@ const TopXRechargeDetailTable: FC = () => {
     { key: "ServiceType", label: "Service Type" },
     { key: "Amount", label: "Amount" },
     { key: "FinalStatus", label: "Final Status" },
-    { key: "CreatedDate", label: "Created Date" },
+    // { key: "CreatedDate", label: "Created Date" },
     { key: "OperatorRefId", label: "Operator Ref Id" },
   ];
 
@@ -206,7 +206,20 @@ const TopXRechargeDetailTable: FC = () => {
     <div className="card-body">
       <div className="row g-4 mb-3">
         <div className="col-sm">
-          <div className="d-flex justify-content-sm-end">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            {/* Date (will be on the left) */}
+            <div>
+              <span className="text-bolder fw-bold fs-5">
+                Date:{" "}
+                {new Date().toLocaleDateString("en-IN", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </div>
+
+            {/* Search Box (will be on the right) */}
             <div className="search-box ms-2" style={{ position: "relative" }}>
               <input
                 id="recharge-search"
@@ -227,7 +240,7 @@ const TopXRechargeDetailTable: FC = () => {
                   top: "50%",
                   right: "10px",
                   transform: "translateY(-50%)",
-                  pointerEvents: "none", // <-- ADD THIS LINE TO FIX THE CLICKING ISSUE
+                  pointerEvents: "none",
                 }}
               ></i>
             </div>
@@ -295,13 +308,13 @@ const TopXRechargeDetailTable: FC = () => {
                       {record.FinalStatus}
                     </span>
                   </td>
-                  <td>{record.CreatedDate}</td>
+                  {/* <td>{record.CreatedDate}</td> */}
                   <td>{record.OperatorRefId}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={10} className="text-center py-5">
+                <td colSpan={9} className="text-center py-5">
                   <h5>Sorry! No Result Found</h5>
                 </td>
               </tr>

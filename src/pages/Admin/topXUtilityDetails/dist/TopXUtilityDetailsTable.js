@@ -226,7 +226,7 @@ var TopXUtilityDetailTable = function () {
         { key: "CategoryName", label: "Category Name" },
         { key: "Amount", label: "Amount" },
         { key: "FinalStatus", label: "Final Status" },
-        { key: "CreatedDate", label: "Created Date" },
+        // { key: "CreatedDate", label: "Created Date" },
         { key: "ConfirmationNumber", label: "Confirmation Number" },
         { key: "CustomerName", label: "Customer Name" },
         { key: "OrderNumber", label: "Order Number" },
@@ -234,7 +234,16 @@ var TopXUtilityDetailTable = function () {
     return (react_1["default"].createElement("div", { className: "card-body" },
         react_1["default"].createElement("div", { className: "row g-4 mb-3" },
             react_1["default"].createElement("div", { className: "col-sm" },
-                react_1["default"].createElement("div", { className: "d-flex justify-content-sm-end" },
+                react_1["default"].createElement("div", { className: "d-flex justify-content-between align-items-center mb-3" },
+                    react_1["default"].createElement("div", null,
+                        react_1["default"].createElement("span", { className: "text-bolder fw-bold fs-5" },
+                            "Date:",
+                            " ",
+                            new Date().toLocaleDateString("en-IN", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric"
+                            }))),
                     react_1["default"].createElement("div", { className: "search-box ms-2", style: { position: "relative" } },
                         react_1["default"].createElement("input", { id: "recharge-search", name: "recharge-search", type: "text", className: "form-control", placeholder: "Search...", value: searchTerm, onChange: function (e) {
                                 setSearchTerm(e.target.value);
@@ -274,11 +283,10 @@ var TopXUtilityDetailTable = function () {
                                 : record.FinalStatus.toLowerCase() === "failed"
                                     ? "bg-danger-subtle text-danger"
                                     : "bg-warning-subtle text-warning") }, record.FinalStatus)),
-                    react_1["default"].createElement("td", null, record.CreatedDate),
                     react_1["default"].createElement("td", null, record.ConfirmationNumber),
                     react_1["default"].createElement("td", null, record.CustomerName),
                     react_1["default"].createElement("td", null, record.OrderNumber))); })) : (react_1["default"].createElement("tr", null,
-                    react_1["default"].createElement("td", { colSpan: 10, className: "text-center py-5" },
+                    react_1["default"].createElement("td", { colSpan: 9, className: "text-center py-5" },
                         react_1["default"].createElement("h5", null, "Sorry! No Result Found"))))))),
         react_1["default"].createElement("div", { className: "d-flex justify-content-end" },
             react_1["default"].createElement("div", { className: "pagination-wrap hstack gap-2" },

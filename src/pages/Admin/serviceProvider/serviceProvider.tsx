@@ -71,15 +71,21 @@ const ServiceProviderDisplay: FC = () => {
     fetchServiceProviders();
   }, []); // Empty array [] ensures this runs only once when the component mounts.
 
-  // --- DATA PROCESSING ---
-  // Memoized function to group operators by category for efficient rendering.
+  // --- DATA PROCESSING (MODIFIED) ---
+  // Memoized function to group operators by ConnectionType or DTH Category.
   const groupedOperators = useMemo<GroupedOperators>(() => {
     return operators.reduce((accumulator, operator) => {
-      const { Category } = operator;
-      if (!accumulator[Category]) {
-        accumulator[Category] = [];
+      // THE KEY CHANGE IS HERE:
+      // If the category is "DTH", use "DTH" as the key.
+      // Otherwise, use the ConnectionType ("Prepaid" or "Postpaid") as the key.
+      const groupKey =
+        operator.Category === "DTH" ? "DTH" : operator.ConnectionType;
+
+      // The rest of the logic remains the same.
+      if (!accumulator[groupKey]) {
+        accumulator[groupKey] = [];
       }
-      accumulator[Category].push(operator);
+      accumulator[groupKey].push(operator);
       return accumulator;
     }, {} as GroupedOperators);
   }, [operators]);

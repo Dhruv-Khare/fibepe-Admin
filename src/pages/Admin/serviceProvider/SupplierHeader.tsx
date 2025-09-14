@@ -55,7 +55,7 @@ const SupplierHeader: FC = () => {
       </Row>
     );
   }
-  const secondaryColor = "#f06548"; // A pleasant orange shade
+  const secondaryColor = "#0ab39c"; // A pleasant orange shade
 
   return (
     <Row>
@@ -84,7 +84,9 @@ const SupplierHeader: FC = () => {
                   <h5 className="mb-1 color-white" style={{ color: "white" }}>
                     {supplier.SupplierExtendedName}
                   </h5>
-                  <p className=" mb-0">{supplier.SupplierCode}</p>
+                  <p className=" mb-0 color-white" style={{ color: "white" }}>
+                    {supplier.SupplierCode}
+                  </p>
                 </CardBody>
               </Card>
             </Col>
