@@ -28,6 +28,9 @@ import TopXUtilityDetailTable from "pages/Admin/topXUtilityDetails/index";
 import ServiceProvider from "pages/Admin/serviceProvider/index";
 import Operators from "pages/Admin/OperatorSummary/index";
 
+import MonthlyDiscount from "pages/Admin/monthlyDiscount/index";
+import VendorFundRequest from "pages/Admin/VendorFundRequest/index";
+
 // Fake Backend (if you are using it)
 import fakeBackend from "./helpers/AuthType/fakeBackend";
 import RefundForm from "pages/Admin/Refund/index";
@@ -190,6 +193,26 @@ function App() {
             <AuthProtected>
               <VerticalLayout>
                 <RefundForm />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+         <Route
+          path="/monthly-discount"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <MonthlyDiscount />
+              </VerticalLayout>
+            </AuthProtected>
+          }
+        />
+        <Route
+          path="/vendor-fund-request"
+          element={
+            <AuthProtected>
+              <VerticalLayout>
+                <VendorFundRequest />
               </VerticalLayout>
             </AuthProtected>
           }

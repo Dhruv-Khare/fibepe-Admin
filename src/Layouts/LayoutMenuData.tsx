@@ -452,6 +452,32 @@ const Navdata = () => {
       },
       stateVariables: isTables,
     },
+     {
+      id: "tables-refund",
+      label: "Monthly Discount",
+      icon: "ri-layout-grid-line",
+      link: "/monthly-discount",
+      click: function (e: any) {
+        e.preventDefault();
+        setIsTables(!isTables);
+        setIscurrentState("Tables");
+        updateIconSidebar(e);
+      },
+      stateVariables: isTables,
+    },
+    {
+      id: "tables-vendorfundRequest",
+      label: "Vendor Fund Request",
+      icon: "ri-layout-grid-line",
+      link: "/vendor-fund-request",
+      click: function (e: any) {
+        e.preventDefault();
+        setIsTables(!isTables);
+        setIscurrentState("Tables");
+        updateIconSidebar(e);
+      },
+      stateVariables: isTables,
+    },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };
